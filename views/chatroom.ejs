@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Chat</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.js"></script>
+        <link href="/css/chat.css" rel="stylesheet" type="text/css">
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <!------ Include the above in your HEAD tag ---------->
+
+        <script src="../../socket.io/socket.io.js"></script>
+        <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    </head>
+    <!--Coded With Love By Mutiullah Samim and further edited by Sherri Chuah-->
+    <body>
+        <div class="container-fluid mh-100">
+            <div class="row spacing justify-content-center">
+                <div class="col-md-4 col-xl-3">
+                    <a href="/home"><button>Home</button></a>
+                </div>
+                <div class="col-md-4 col-xl-3">
+                    <h6>Chatroom</h6>
+                </div>
+                <div class="col-md-4 col-xl-3">
+                    
+                </div>
+            </div>
+            <div class="row justify-content-center mh-75">
+                <!-- Category for chatrooms -->
+                <div class="col-md-4 col-xl-3 chat"><div class="card mb-sm-3 mb-md-0 contacts_card">
+                    <div class="card-header">
+                        <div class="cat_info">
+                            <h5>Categories</h5>
+                        </div>
+                    </div>
+                    <div class="card-body contacts_body">
+                        <ui class="category">
+                        <li id="food" class="category_box onCurr" onclick="toPage('food', this)">
+                            <div class="d-flex">
+                                <div class="img_cont">
+                                    <img src="/img/chat/food.png" class="rounded-circle cat_img">
+                                </div>
+                                <div class="cat_info">
+                                    <span>Food</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li id="vaccine" class="category_box" onclick="toPage('vaccine', this)">
+                            <div class="d-flex">
+                                <div class="img_cont">
+                                    <img src="/img/chat/vaccine.png" class="rounded-circle cat_img">
+                                </div>
+                                <div class="cat_info">
+                                    <span>Vaccine</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li id="uni" class="category_box" onclick="toPage('uni', this)">
+                            <div class="d-flex">
+                                <div class="img_cont">
+                                    <img src="/img/chat/uni.png" class="rounded-circle cat_img">
+                                </div>
+                                <div class="cat_info">
+                                    <span>Uni</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li id="random" class="category_box" onclick="toPage('random', this)">
+                            <div class="d-flex">
+                                <div class="img_cont">
+                                    <img src="/img/chat/random.png" class="rounded-circle cat_img">
+                                </div>
+                                <div class="cat_info">
+                                    <span>Random</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li id="opinion" class="category_box" onclick="toPage('opinion', this)">
+                            <div class="d-flex">
+                                <div class="img_cont">
+                                    <img src="/img/chat/opinion.png" class="rounded-circle cat_img">
+                                </div>
+                                <div class="cat_info">
+                                    <span>Opinion</span>
+                                </div>
+                            </div>
+                        </li>
+                        </ui>
+                    </div>
+                    <div class="card-footer"></div>
+                </div></div>
+                <!-- The chat area -->
+                <div class="col-md-8 col-xl-6 chat">
+                    <div class="card">
+                        <div class="card-header msg_head">
+                            <div class="d-flex">
+                                <div class="img_cont">
+                                    <img id="currRoomPic" src="/img/chat/food.png" class="rounded-circle cat_img">
+                                </div>
+                                <div class="cat_info">
+                                    <span id="currRoom">Food Chat</span>
+                                </div>
+                            </div>
+                            <span id="action_menu_btn"><i class="fas fa-ellipsis-v"></i></span>
+                            <div class="action_menu">
+                                <ul>
+                                    <li><i class="fas fa-user-circle"></i> View profile</li>
+                                    <li><i class="fas fa-users"></i> Add to close friends</li>
+                                    <li><i class="fas fa-plus"></i> Add to group</li>
+                                    <li><i class="fas fa-ban"></i> Block</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- Messages are here -->
+                        <div class="msg_space card-body  msg_card_body">
+                            <div>
+                                <!-- Food Chat -->
+                                <ul style="display: block" id="foodchat"></ul>
+                                <!-- Vaccine Chat -->
+                                <ul style="display: none" id="vaccinechat"></ul>
+                                <!-- Uni Chat -->
+                                <ul style="display: none" id="unichat"></ul>
+                                <!-- Random Chat -->
+                                <ul style="display: none" id="randomchat"></ul>
+                                <!-- Opinion Chat -->
+                                <ul style="display: none" id="opinionchat"></ul>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <form method="POST" id="chatForm">
+                              <input class="form-control type_msg" id="txt" autocomplete="off" autofocus="on" placeholder="type your message here..." />
+                              <button>>></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            var socket = io.connect('http://localhost:8000');
+            // submit text message without reload/refresh the page
+            $('form').submit(function(e){
+                e.preventDefault(); // prevents page reloading
+                if ($('#txt').val() != ''){
+                    socket.emit('chat_message', $('#txt').val());
+                }                
+                $('#txt').val('');
+                return false;
+            });
+            // append the chat text message
+            socket.on('chat_message', function(msg){
+                $('#' + socket.currRoom + "chat").append($('<li>').html(msg));
+            });
+            // append text if someone is online
+            socket.on('is_online', function(username) {
+                $('#' + socket.currRoom + "chat").append($('<li>').html(username));
+            });
+
+            // get the chatroom
+            socket.currRoom = "food";
+
+            // prompt name
+            var username = prompt('Please tell me your name');
+            socket.username = username;
+
+            socket.emit('username', {username: socket.username, room: socket.currRoom});
+
+            function toPage(page, event){
+                if (socket.currRoom != page){
+                // remove the onCurr style
+                document.getElementById(socket.currRoom).classList.remove("onCurr");
+                // remove display for chatroom
+                document.getElementById(socket.currRoom + "chat").style.display = "none";
+
+                // leave room
+                socket.emit("leave");
+
+                // change curr room socket
+                socket.currRoom = page;
+
+                // put current room name
+                document.getElementById("currRoom").innerHTML = socket.currRoom.charAt(0).toUpperCase() + socket.currRoom.slice(1) + " Chat";
+
+                // put current room picture
+                document.getElementById("currRoomPic").src = "/img/chat/" + socket.currRoom + ".png";
+
+                // put onCurr for new page
+                document.getElementById(socket.currRoom).classList.add("onCurr");
+
+                // display html for correct chatroom
+                document.getElementById(socket.currRoom + "chat").style.display = "block";
+
+                // connect to the other page
+                socket.emit('username', {username: socket.username, room: socket.currRoom});
+                }  
+            }     
+        </script>
+    </body>
+</html>
+                                            
